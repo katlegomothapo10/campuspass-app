@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CampusPass</string>
+    <string name="welcome">Sawubona</string>
+    <string name="login">Ngena</string>
+    <string name="register">Bhalisa</string>
+    <string name="email">I-imeyili</string>
+    <string name="password">Iphasiwedi</string>
+    <string name="full_name">Igama eliphelele</string>
+    <string name="student_number">Inombolo yomfundi</string>
+    <string name="confirm_password">Qinisekisa iphasiwedi</string>
+    <string name="settings">Izilungiselelo</string>
+    <string name="language">Ulimi</string>
+    <string name="notifications">Izaziso</string>
+    <string name="security">Ukuphepha</string>
+    <string name="logout">Phuma</string>
+    <string name="events">Imicimbi</string>
+    <string name="tickets">Amathikithi</string>
+    <string name="profile">Iphrofayela</string>
+    <string name="home">Ikhaya</string>
+    <string name="event_reminders">Izikhumbuzo zomcimbi</string>
+    <string name="ticket_updates">Izibuyekezo zethikithi</string>
+    <string name="biometric_auth">Ukuqinisekiswa kwebhayometriki</string>
+    <string name="change_password">Shintsha iphasiwedi</string>
+    <string name="privacy_policy">Inqubomgomo yobumfihlo</string>
+    <string name="terms_of_service">Imigomo yesevisi</string>
+    <string name="one_app_for_every_event">Uhlelo olulodwa lomcimbi ngamunye</string>
+</resources>

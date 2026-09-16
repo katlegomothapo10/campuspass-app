@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CampusPass</string>
+    <string name="welcome">Welkom</string>
+    <string name="login">Teken in</string>
+    <string name="register">Registreer</string>
+    <string name="email">E-pos</string>
+    <string name="password">Wagwoord</string>
+    <string name="full_name">Volle naam</string>
+    <string name="student_number">Studentenommer</string>
+    <string name="confirm_password">Bevestig wagwoord</string>
+    <string name="settings">Instellings</string>
+    <string name="language">Taal</string>
+    <string name="notifications">Kennisgewings</string>
+    <string name="security">Sekuriteit</string>
+    <string name="logout">Teken uit</string>
+    <string name="events">Gebeure</string>
+    <string name="tickets">Kaartjies</string>
+    <string name="profile">Profiel</string>
+    <string name="home">Tuis</string>
+    <string name="event_reminders">Gebeurtenis-herinneringe</string>
+    <string name="ticket_updates">Kaartjie-opdaterings</string>
+    <string name="biometric_auth">Biometriese verifikasie</string>
+    <string name="change_password">Verander wagwoord</string>
+    <string name="privacy_policy">Privaatheidsbeleid</string>
+    <string name="terms_of_service">Diensvoorwaardes</string>
+    <string name="one_app_for_every_event">Een app vir elke kampusgeleentheid</string>
+</resources>
