@@ -1,3 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CampusPass</string>
+    <string name="welcome">Welcome</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full Name</string>
+    <string name="student_number">Student Number</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="settings">Settings</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="security">Security</string>
+    <string name="logout">Logout</string>
+    <string name="events">Events</string>
+    <string name="tickets">Tickets</string>
+    <string name="profile">Profile</string>
+    <string name="home">Home</string>
+    <string name="event_reminders">Event Reminders</string>
+    <string name="ticket_updates">Ticket Updates</string>
+    <string name="biometric_auth">Biometric Authentication</string>
+    <string name="change_password">Change Password</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="one_app_for_every_event">One app for every campus event</string>
 </resources>

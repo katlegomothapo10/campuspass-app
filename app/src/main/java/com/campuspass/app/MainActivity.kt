@@ -10,13 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.campuspass.app.ui.screens.LoginScreen
-import com.campuspass.app.ui.screens.MainScreen
-import com.campuspass.app.ui.screens.RegisterScreen
-import com.campuspass.app.ui.screens.SettingsScreen
+import androidx.navigation.navArgument
+import com.campuspass.app.ui.screens.*
 import com.campuspass.app.ui.theme.CampusPassTheme
 import kotlinx.coroutines.launch
 
@@ -33,16 +32,12 @@ class MainActivity : ComponentActivity() {
                 var isLoggedIn by remember { mutableStateOf(false) }
 
                 LaunchedEffect(Unit) {
-                    val token = prefs.getToken()
-                    isLoggedIn = token != null
+                    isLoggedIn = prefs.getToken() != null
                     isCheckingAuth = false
                 }
 
                 if (isCheckingAuth) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 } else {
@@ -53,9 +48,7 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             LoginScreen(
                                 onLoginSuccess = {
-                                    navController.navigate("main") {
-                                        popUpTo("login") { inclusive = true }
-                                    }
+                                    navController.navigate("main") { popUpTo("login") { inclusive = true } }
                                 },
                                 onNavigateToRegister = { navController.navigate("register") }
                             )
@@ -64,9 +57,7 @@ class MainActivity : ComponentActivity() {
                         composable("register") {
                             RegisterScreen(
                                 onRegisterSuccess = {
-                                    navController.navigate("main") {
-                                        popUpTo("login") { inclusive = true }
-                                    }
+                                    navController.navigate("main") { popUpTo("login") { inclusive = true } }
                                 },
                                 onNavigateToLogin = { navController.popBackStack() }
                             )
@@ -75,14 +66,13 @@ class MainActivity : ComponentActivity() {
                         composable("main") {
                             MainScreen(
                                 onOpenSettings = { navController.navigate("settings") },
+                                onOpenEventDetails = { title -> navController.navigate("event/$title") },
+                                onOpenEditProfile = { navController.navigate("editProfile") },
+                                onOpenMyEvents = { navController.navigate("myEvents") },
                                 onLogout = {
-                                    kotlinx.coroutines.CoroutineScope(
-                                        kotlinx.coroutines.Dispatchers.Main
-                                    ).launch {
+                                    kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
                                         prefs.clear()
-                                        navController.navigate("login") {
-                                            popUpTo("main") { inclusive = true }
-                                        }
+                                        navController.navigate("login") { popUpTo("main") { inclusive = true } }
                                     }
                                 }
                             )
@@ -92,16 +82,58 @@ class MainActivity : ComponentActivity() {
                             SettingsScreen(
                                 onBack = { navController.popBackStack() },
                                 onLogout = {
-                                    kotlinx.coroutines.CoroutineScope(
-                                        kotlinx.coroutines.Dispatchers.Main
-                                    ).launch {
+                                    kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
                                         prefs.clear()
-                                        navController.navigate("login") {
-                                            popUpTo("main") { inclusive = true }
-                                        }
+                                        navController.navigate("login") { popUpTo("main") { inclusive = true } }
+                                    }
+                                },
+                                onOpenChangePassword = { navController.navigate("changePassword") },
+                                onOpenPrivacyPolicy = { navController.navigate("privacy") },
+                                onOpenTermsOfService = { navController.navigate("terms") },
+                                onOpenHelp = { navController.navigate("help") }
+                            )
+                        }
+
+                        composable(
+                            "event/{title}",
+                            arguments = listOf(navArgument("title") { type = NavType.StringType })
+                        ) { entry ->
+                            EventDetailsScreen(
+                                eventTitle = entry.arguments?.getString("title") ?: "",
+                                onBack = { navController.popBackStack() },
+                                onRegister = { }
+                            )
+                        }
+
+                        composable("editProfile") {
+                            EditProfileScreen(
+                                onBack = { navController.popBackStack() },
+                                onSave = { name, email ->
+                                    kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
+                                        prefs.saveUser(name, email)
                                     }
                                 }
                             )
+                        }
+
+                        composable("myEvents") {
+                            MyEventsScreen(onBack = { navController.popBackStack() })
+                        }
+
+                        composable("changePassword") {
+                            ChangePasswordScreen(onBack = { navController.popBackStack() })
+                        }
+
+                        composable("privacy") {
+                            PrivacyPolicyScreen(onBack = { navController.popBackStack() })
+                        }
+
+                        composable("terms") {
+                            TermsOfServiceScreen(onBack = { navController.popBackStack() })
+                        }
+
+                        composable("help") {
+                            HelpSupportScreen(onBack = { navController.popBackStack() })
                         }
                     }
                 }
