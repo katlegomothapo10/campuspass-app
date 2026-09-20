@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.campuspass.app.api.RetrofitInstance
 import com.campuspass.app.data.model.LoginRequest
 import com.campuspass.app.data.model.RegisterRequest
+import com.campuspass.app.data.model.SsoRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,6 +24,25 @@ class AuthViewModel : ViewModel() {
             _loginState.value = LoginState.Loading
             try {
                 val response = RetrofitInstance.api.login(LoginRequest(email, password))
+                if (response.success && response.token != null) {
+                    val prefs = UserPreferences(context)
+                    prefs.saveToken(response.token)
+                    prefs.saveUser(response.user?.name ?: "", response.user?.email ?: "")
+                    _loginState.value = LoginState.Success
+                } else {
+                    _loginState.value = LoginState.Error(response.message)
+                }
+            } catch (e: Exception) {
+                _loginState.value = LoginState.Error(e.message ?: "Network error")
+            }
+        }
+    }
+
+    fun googleSso(context: Context, idToken: String, mode: String) {
+        viewModelScope.launch {
+            _loginState.value = LoginState.Loading
+            try {
+                val response = RetrofitInstance.api.ssoLogin(SsoRequest(idToken, mode))
                 if (response.success && response.token != null) {
                     val prefs = UserPreferences(context)
                     prefs.saveToken(response.token)

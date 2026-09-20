@@ -39,7 +39,10 @@ class MainActivity : ComponentActivity() {
                 }
 
                 if (isCheckingAuth) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
                         CircularProgressIndicator()
                     }
                 } else {
@@ -54,8 +57,7 @@ class MainActivity : ComponentActivity() {
                                         popUpTo("login") { inclusive = true }
                                     }
                                 },
-                                onNavigateToRegister = { navController.navigate("register") },
-                                onGoogleLogin = { }
+                                onNavigateToRegister = { navController.navigate("register") }
                             )
                         }
 
@@ -74,7 +76,9 @@ class MainActivity : ComponentActivity() {
                             MainScreen(
                                 onOpenSettings = { navController.navigate("settings") },
                                 onLogout = {
-                                    kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
+                                    kotlinx.coroutines.CoroutineScope(
+                                        kotlinx.coroutines.Dispatchers.Main
+                                    ).launch {
                                         prefs.clear()
                                         navController.navigate("login") {
                                             popUpTo("main") { inclusive = true }
@@ -88,7 +92,9 @@ class MainActivity : ComponentActivity() {
                             SettingsScreen(
                                 onBack = { navController.popBackStack() },
                                 onLogout = {
-                                    kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main).launch {
+                                    kotlinx.coroutines.CoroutineScope(
+                                        kotlinx.coroutines.Dispatchers.Main
+                                    ).launch {
                                         prefs.clear()
                                         navController.navigate("login") {
                                             popUpTo("main") { inclusive = true }

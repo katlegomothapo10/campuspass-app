@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.campuspass.app.LocaleHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +49,6 @@ fun SettingsScreen(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-
             Text("Language", fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -80,7 +78,6 @@ fun SettingsScreen(
                             onClick = {
                                 selectedLanguage = lang
                                 languageExpanded = false
-                                // Apply the language change
                                 applyLanguage(context, lang)
                             }
                         )
@@ -144,7 +141,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
-                onClick = { /* TODO */ },
+                onClick = { },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Change Password")
@@ -155,13 +152,13 @@ fun SettingsScreen(
             Text("Legal", fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedButton(onClick = { /* TODO */ }, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = { }, modifier = Modifier.fillMaxWidth()) {
                 Text("Privacy Policy")
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedButton(onClick = { /* TODO */ }, modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = { }, modifier = Modifier.fillMaxWidth()) {
                 Text("Terms of Service")
             }
 
@@ -200,7 +197,5 @@ private fun applyLanguage(context: Context, languageName: String) {
     val config = android.content.res.Configuration(context.resources.configuration)
     config.setLocale(locale)
     context.resources.updateConfiguration(config, context.resources.displayMetrics)
-
-    // Restart activity to apply
     (context as? Activity)?.recreate()
 }

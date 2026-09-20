@@ -13,7 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.campuspass.app.AuthViewModel
+import com.campuspass.app.GoogleAuthHelper
+import com.campuspass.app.LoginState
 import com.campuspass.app.RegisterState
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
@@ -22,14 +25,18 @@ fun RegisterScreen(
     viewModel: AuthViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var studentNumber by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
+    var googleLoading by remember { mutableStateOf(false) }
 
     val registerState by viewModel.registerState.collectAsState()
+    val loginState by viewModel.loginState.collectAsState()
 
     LaunchedEffect(registerState) {
         when (val state = registerState) {
@@ -38,6 +45,19 @@ fun RegisterScreen(
                 viewModel.resetRegisterState()
             }
             is RegisterState.Error -> {
+                errorMessage = state.message
+            }
+            else -> {}
+        }
+    }
+
+    LaunchedEffect(loginState) {
+        when (val state = loginState) {
+            is LoginState.Success -> {
+                onRegisterSuccess()
+                viewModel.resetLoginState()
+            }
+            is LoginState.Error -> {
                 errorMessage = state.message
             }
             else -> {}
@@ -53,6 +73,38 @@ fun RegisterScreen(
     ) {
         Text("Create Account", fontSize = 28.sp)
         Spacer(modifier = Modifier.height(24.dp))
+
+        // Sign up with Google — mode = "register"
+        Button(
+            onClick = {
+                scope.launch {
+                    googleLoading = true
+                    errorMessage = ""
+                    val idToken = GoogleAuthHelper.signIn(context)
+                    if (idToken != null) {
+                        viewModel.googleSso(context, idToken, mode = "register")
+                    } else {
+                        errorMessage = "Google sign-in cancelled"
+                    }
+                    googleLoading = false
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !googleLoading
+        ) {
+            if (googleLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            } else {
+                Text("Sign up with Google")
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text("OR")
+        Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = name,

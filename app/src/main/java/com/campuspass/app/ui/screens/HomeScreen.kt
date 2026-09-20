@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -24,7 +23,6 @@ fun HomeScreen(
 
     var userName by remember { mutableStateOf("Student") }
 
-    // Placeholder events
     val events = listOf(
         Event("Campus Music Festival", "24 May 2026", "Amphitheatre", "42/100 spots left"),
         Event("Sports Day 2026", "28 May 2026", "Main Field", "65/200 spots left"),
@@ -71,10 +69,22 @@ fun HomeScreen(
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(event.title, fontSize = 16.sp)
                             Spacer(modifier = Modifier.height(4.dp))
-                            Text(event.date, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text(event.location, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(
+                                event.date,
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Text(
+                                event.location,
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text(event.spots, fontSize = 13.sp, color = MaterialTheme.colorScheme.primary)
+                            Text(
+                                event.spots,
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.primary
+                            )
                         }
                     }
                 }

@@ -13,19 +13,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.campuspass.app.AuthViewModel
+import com.campuspass.app.GoogleAuthHelper
 import com.campuspass.app.LoginState
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
     onNavigateToRegister: () -> Unit,
-    onGoogleLogin: () -> Unit,
     viewModel: AuthViewModel = viewModel()
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
+    var googleLoading by remember { mutableStateOf(false) }
 
     val loginState by viewModel.loginState.collectAsState()
 
@@ -54,11 +58,32 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(48.dp))
 
+        // Login with Google — mode = "login"
         Button(
-            onClick = { onGoogleLogin() },
-            modifier = Modifier.fillMaxWidth()
+            onClick = {
+                scope.launch {
+                    googleLoading = true
+                    errorMessage = ""
+                    val idToken = GoogleAuthHelper.signIn(context)
+                    if (idToken != null) {
+                        viewModel.googleSso(context, idToken, mode = "login")
+                    } else {
+                        errorMessage = "Google sign-in cancelled"
+                    }
+                    googleLoading = false
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !googleLoading
         ) {
-            Text("Login with Google")
+            if (googleLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            } else {
+                Text("Login with Google")
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

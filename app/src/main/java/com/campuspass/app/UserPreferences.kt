@@ -35,6 +35,10 @@ class UserPreferences(private val context: Context) {
         return context.dataStore.data.first()[USER_NAME_KEY]
     }
 
+    suspend fun getUserEmail(): String? {
+        return context.dataStore.data.first()[USER_EMAIL_KEY]
+    }
+
     suspend fun clear() {
         context.dataStore.edit { it.clear() }
     }

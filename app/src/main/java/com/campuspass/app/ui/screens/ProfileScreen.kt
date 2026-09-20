@@ -27,6 +27,7 @@ fun ProfileScreen(
 
     LaunchedEffect(Unit) {
         userName = prefs.getUserName() ?: "Student"
+        userEmail = prefs.getUserEmail() ?: "student@campus.ac.za"
     }
 
     Scaffold(
@@ -49,8 +50,6 @@ fun ProfileScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            // Avatar
             Surface(
                 shape = MaterialTheme.shapes.extraLarge,
                 color = MaterialTheme.colorScheme.primary,
@@ -76,7 +75,6 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Stats row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -88,9 +86,8 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Menu items
             OutlinedButton(
-                onClick = { /* TODO: Edit profile */ },
+                onClick = { },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Edit Profile")
@@ -99,7 +96,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
-                onClick = { /* TODO: My events */ },
+                onClick = { },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("My Events")
@@ -117,7 +114,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
-                onClick = { /* TODO: Help */ },
+                onClick = { },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Help & Support")

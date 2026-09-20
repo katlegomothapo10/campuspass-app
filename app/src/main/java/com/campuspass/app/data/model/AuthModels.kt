@@ -12,6 +12,11 @@ data class RegisterRequest(
     val password: String
 )
 
+data class SsoRequest(
+    val idToken: String,
+    val mode: String
+)
+
 data class AuthResponse(
     val success: Boolean,
     val message: String,
