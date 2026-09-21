@@ -19,7 +19,7 @@ data class SsoRequest(
 
 data class AuthResponse(
     val success: Boolean,
-    val message: String,
+    val message: String?,
     val token: String?,
     val user: User?
 )
