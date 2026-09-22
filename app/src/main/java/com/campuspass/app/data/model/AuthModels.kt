@@ -31,3 +31,36 @@ data class User(
     val student_number: String?,
     val role: String
 )
+
+data class Event(
+    val id: Int,
+    val title: String,
+    val description: String?,
+    val date: String,
+    val time: String,
+    val location: String,
+    val capacity: Int,
+    val category: String?,
+    val clubId: Int?,
+    val status: String?
+)
+
+data class EventsResponse(
+    val success: Boolean,
+    val events: List<Event>?
+)
+
+data class EventResponse(
+    val success: Boolean,
+    val event: Event?
+)
+
+data class CreateEventRequest(
+    val title: String,
+    val description: String,
+    val date: String,
+    val time: String,
+    val location: String,
+    val capacity: Int,
+    val category: String
+)

@@ -1,5 +1,5 @@
 package com.campuspass.app.ui.screens
-import androidx.compose.material.icons.filled.Visibility
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -7,7 +7,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Fingerprint
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -71,35 +75,19 @@ fun LoginScreen(
         ) {
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Logo
             Box(
                 modifier = Modifier
                     .size(96.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(
-                        Brush.linearGradient(
-                            colors = listOf(PrimaryBlue, PrimaryBlueDark)
-                        )
-                    ),
+                    .background(Brush.linearGradient(colors = listOf(PrimaryBlue, PrimaryBlueDark))),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    "CP",
-                    fontSize = 42.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
+                Text("CP", fontSize = 42.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                "CampusPass",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
+            Text("CampusPass", fontSize = 32.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
             Text(
                 "One app for every campus event",
                 fontSize = 14.sp,
@@ -110,7 +98,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // Google button
             OutlinedButton(
                 onClick = {
                     scope.launch {
@@ -125,58 +112,32 @@ fun LoginScreen(
                         googleLoading = false
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(54.dp),
+                modifier = Modifier.fillMaxWidth().height(54.dp),
                 enabled = !googleLoading,
                 shape = RoundedCornerShape(14.dp)
             ) {
                 if (googleLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(22.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.primary)
                 } else {
-                    Text(
-                        "Login with Google",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    Text("Login with Google", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // OR divider
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                 HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.outline)
-                Text(
-                    "OR",
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Text("OR", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.outline)
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Email
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email address") },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Email,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                },
+                leadingIcon = { Icon(Icons.Default.Email, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 enabled = loginState !is LoginState.Loading,
@@ -186,18 +147,11 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            // Password
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password") },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Lock,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                },
+                leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
                         Icon(
@@ -217,34 +171,19 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Forgot password
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = { }) {
-                    Text(
-                        "Forgot password?",
-                        fontSize = 13.sp,
-                        color = PrimaryBlue
-                    )
+                    Text("Forgot password?", fontSize = 13.sp, color = PrimaryBlue)
                 }
             }
 
             if (errorMessage.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    errorMessage,
-                    color = MaterialTheme.colorScheme.error,
-                    fontSize = 13.sp,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                Text(errorMessage, color = MaterialTheme.colorScheme.error, fontSize = 13.sp, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Login button
             Button(
                 onClick = {
                     errorMessage = ""
@@ -254,68 +193,30 @@ fun LoginScreen(
                         viewModel.login(context, email, password)
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(54.dp),
+                modifier = Modifier.fillMaxWidth().height(54.dp),
                 enabled = loginState !is LoginState.Loading,
                 shape = RoundedCornerShape(14.dp)
             ) {
                 if (loginState is LoginState.Loading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(22.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
+                    CircularProgressIndicator(modifier = Modifier.size(22.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
                 } else {
-                    Text(
-                        "Login",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    Text("Login", fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Register link
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    "Don't have an account? ",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                TextButton(
-                    onClick = onNavigateToRegister,
-                    enabled = loginState !is LoginState.Loading,
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        "Register",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = PrimaryBlue
-                    )
+            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                Text("Don't have an account? ", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                TextButton(onClick = onNavigateToRegister, enabled = loginState !is LoginState.Loading, contentPadding = PaddingValues(0.dp)) {
+                    Text("Register", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = PrimaryBlue)
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Biometric icon
-            Icon(
-                Icons.Default.Fingerprint,
-                contentDescription = "Biometric",
-                tint = PrimaryBlue,
-                modifier = Modifier.size(40.dp)
-            )
-            Text(
-                "Use biometric login",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 4.dp)
-            )
+            Icon(Icons.Default.Fingerprint, contentDescription = "Biometric", tint = PrimaryBlue, modifier = Modifier.size(40.dp))
+            Text("Use biometric login", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 4.dp))
 
             Spacer(modifier = Modifier.height(16.dp))
         }
