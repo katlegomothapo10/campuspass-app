@@ -9,38 +9,51 @@ import kotlinx.coroutines.withContext
 
 object SyncManager {
 
-    suspend fun syncEvents(context: Context): Boolean = withContext(Dispatchers.IO) {
+    suspend fun syncEvents(
+        context: Context
+    ): Boolean = withContext(Dispatchers.IO) {
+
         try {
             val db = AppDatabase.getDatabase(context)
             val dao = db.eventDao()
 
             val response = RetrofitInstance.api.getEvents()
-            if (response.success && response.events != null) {
-                dao.clearAll()
-                dao.insertAll(response.events.map { e ->
+            val events = response.events
+
+            dao.clearAll()
+
+            dao.insertAll(
+                events.map { event ->
                     EventEntity(
-                        id = e.id,
-                        title = e.title,
-                        description = e.description,
-                        date = e.date,
-                        time = e.time,
-                        location = e.location,
-                        capacity = e.capacity,
-                        category = e.category,
+                        id = event.eventId,
+                        title = event.title,
+                        description = event.description,
+                        date = event.date,
+                        time = event.time,
+                        location = event.location,
+                        capacity = event.capacity,
+                        category = event.category,
                         syncStatus = "synced"
                     )
-                })
-                true
-            } else false
+                }
+            )
+
+            true
+
         } catch (e: Exception) {
             false
         }
     }
 
-    suspend fun getCachedEvents(context: Context): List<EventEntity> = withContext(Dispatchers.IO) {
+    suspend fun getCachedEvents(
+        context: Context
+    ): List<EventEntity> = withContext(Dispatchers.IO) {
+
         try {
             val db = AppDatabase.getDatabase(context)
+
             db.eventDao().getAll()
+
         } catch (e: Exception) {
             emptyList()
         }

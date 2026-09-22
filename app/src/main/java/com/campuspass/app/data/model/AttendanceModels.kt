@@ -9,7 +9,7 @@ data class Attendance(
     val ticketId: Int,
     val eventId: Int,
     val userId: Int,
-    val scannedBy: Int,
+    val scannedByUserId: Int,
     val scannedAt: String? = null
 )
 
