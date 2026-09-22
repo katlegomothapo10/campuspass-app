@@ -3,7 +3,11 @@ package com.campuspass.app.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -86,7 +90,7 @@ fun EditProfileScreen(
                 value = "ST10442760",
                 onValueChange = { },
                 label = { Text("Student Number") },
-                leadingIcon = { Icon(Icons.Default.Badge, contentDescription = null) },
+                leadingIcon = { Icon(Icons.Default.School, contentDescription = null) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(14.dp),
                 singleLine = true,
@@ -103,9 +107,18 @@ fun EditProfileScreen(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Color(0xFF10B981), modifier = Modifier.size(18.dp))
+                        Icon(
+                            Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = Color(0xFF10B981),
+                            modifier = Modifier.size(18.dp)
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Profile updated!", color = Color(0xFF10B981), fontSize = 13.sp)
+                        Text(
+                            "Profile updated!",
+                            color = Color(0xFF10B981),
+                            fontSize = 13.sp
+                        )
                     }
                 }
             }

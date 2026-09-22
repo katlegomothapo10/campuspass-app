@@ -8,10 +8,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.School
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.campuspass.app.AuthViewModel
+import com.campuspass.app.GoogleAuthHelper
 import com.campuspass.app.LoginState
 import com.campuspass.app.RegisterState
 import com.campuspass.app.ui.theme.PrimaryBlue
@@ -50,6 +51,7 @@ fun RegisterScreen(
     var passwordVisible by remember { mutableStateOf(false) }
     var confirmVisible by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
+    var googleLoading by remember { mutableStateOf(false) }
 
     val registerState by viewModel.registerState.collectAsState()
     val loginState by viewModel.loginState.collectAsState()
@@ -103,6 +105,48 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
+            // === GOOGLE SSO SIGN UP BUTTON ===
+            OutlinedButton(
+                onClick = {
+                    scope.launch {
+                        googleLoading = true
+                        errorMessage = ""
+                        val idToken = GoogleAuthHelper.signIn(context)
+                        if (idToken != null) {
+                            viewModel.googleSso(context, idToken, "register")
+                        } else {
+                            errorMessage = "Google sign-in cancelled"
+                        }
+                        googleLoading = false
+                    }
+                },
+                modifier = Modifier.fillMaxWidth().height(54.dp),
+                enabled = !googleLoading,
+                shape = RoundedCornerShape(14.dp)
+            ) {
+                if (googleLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(22.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                } else {
+                    Text("Sign up with Google", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // OR divider
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.outline)
+                Text("OR", modifier = Modifier.padding(horizontal = 12.dp), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.outline)
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // === MANUAL REGISTRATION FORM ===
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -134,7 +178,7 @@ fun RegisterScreen(
                 value = studentNumber,
                 onValueChange = { studentNumber = it },
                 label = { Text("Student Number") },
-                leadingIcon = { Icon(Icons.Default.Badge, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
+                leadingIcon = { Icon(Icons.Default.School, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = registerState !is RegisterState.Loading,
                 shape = RoundedCornerShape(14.dp),

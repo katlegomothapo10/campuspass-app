@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
 
     // 10.0.2.2 = the host computer's localhost when using the Android Emulator
-    private const val BASE_URL = "http://127.0.0.1:3000/api/"
+    private const val BASE_URL = "http://10.0.2.2:3000/api/"
 
     private val loggingInterceptor = HttpLoggingInterceptor { message ->
         Log.d("CampusPassAPI", message)
