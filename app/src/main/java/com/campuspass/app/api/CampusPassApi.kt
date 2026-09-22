@@ -1,5 +1,7 @@
 package com.campuspass.app.api
 
+import com.campuspass.app.data.model.AttendanceScanRequest
+import com.campuspass.app.data.model.AttendanceScanResponse
 import com.campuspass.app.data.model.AuthResponse
 import com.campuspass.app.data.model.CreateEventRequest
 import com.campuspass.app.data.model.EventResponse
@@ -18,7 +20,9 @@ import retrofit2.http.Path
 
 interface CampusPassApi {
 
-    // ==== AUTHENTICATION ====
+    // =========================
+    // AUTHENTICATION
+    // =========================
 
     @POST("auth/login")
     suspend fun login(
@@ -35,19 +39,33 @@ interface CampusPassApi {
         @Body request: SsoRequest
     ): AuthResponse
 
+    /*
+     * NOTE:
+     * The current CampusPass backend does not expose /api/users/me.
+     * This method is retained for compatibility with existing team code.
+     * Do not rely on it for the organizer My Events flow.
+     */
     @GET("users/me")
     suspend fun getMe(
         @Header("Authorization") token: String
     ): AuthResponse
 
-    // ==== EVENTS (Person 2) ====
+
+    // =========================
+    // EVENTS
+    // =========================
 
     @GET("events")
     suspend fun getEvents(): EventsResponse
 
     @GET("events/{id}")
+    suspend fun getEvent(
+        @Path("id") eventId: Int
+    ): EventResponse
+
+    @GET("events/{id}")
     suspend fun getEventById(
-        @Path("id") id: Int
+        @Path("id") eventId: Int
     ): EventResponse
 
     @POST("events")
@@ -56,7 +74,16 @@ interface CampusPassApi {
         @Body request: CreateEventRequest
     ): EventResponse
 
-    // ==== TICKETS (Person 3) ====
+    @POST("events/{id}/tickets")
+    suspend fun registerForEvent(
+        @Header("Authorization") token: String,
+        @Path("id") eventId: Int
+    ): TicketResponse
+
+
+    // =========================
+    // TICKETS
+    // =========================
 
     @GET("tickets/me")
     suspend fun getMyTickets(
@@ -74,4 +101,15 @@ interface CampusPassApi {
         @Header("Authorization") token: String,
         @Path("id") ticketId: Int
     ): TicketQrResponse
+
+
+    // =========================
+    // ATTENDANCE / QR SCANNING
+    // =========================
+
+    @POST("attendance/scan")
+    suspend fun scanTicket(
+        @Header("Authorization") token: String,
+        @Body request: AttendanceScanRequest
+    ): AttendanceScanResponse
 }

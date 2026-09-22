@@ -40,6 +40,11 @@ android {
 }
 
 dependencies {
+
+    // =========================
+    // JETPACK COMPOSE
+    // =========================
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3)
@@ -50,33 +55,64 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
-    // Retrofit
+    // =========================
+    // RETROFIT / API
+    // =========================
+
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // ViewModel Compose
+    // =========================
+    // VIEWMODEL
+    // =========================
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 
-    // DataStore
+    // =========================
+    // DATASTORE
+    // =========================
+
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    // Navigation Compose
+    // =========================
+    // NAVIGATION
+    // =========================
+
     implementation("androidx.navigation:navigation-compose:2.8.4")
 
-    // Google Sign-In
+    // =========================
+    // GOOGLE SIGN-IN
+    // =========================
+
     implementation("androidx.credentials:credentials:1.3.0")
     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
 
-    // Biometric
+    // =========================
+    // BIOMETRIC AUTHENTICATION
+    // =========================
+
     implementation("androidx.biometric:biometric:1.1.0")
 
-    // RoomDB
+    // =========================
+    // ROOM DATABASE
+    // =========================
+
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+
+    // =========================
+    // QR CODE SCANNING - ZXING
+    // =========================
+
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    // =========================
+    // TESTING
+    // =========================
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
