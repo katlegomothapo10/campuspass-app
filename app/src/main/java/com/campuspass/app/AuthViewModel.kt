@@ -22,18 +22,30 @@ class AuthViewModel : ViewModel() {
     fun login(context: Context, email: String, password: String) {
         viewModelScope.launch {
             _loginState.value = LoginState.Loading
+
             try {
-                val response = RetrofitInstance.api.login(LoginRequest(email, password))
+                val response = RetrofitInstance.api.login(
+                    LoginRequest(email, password)
+                )
+
                 if (response.success && response.token != null) {
                     val prefs = UserPreferences(context)
                     prefs.saveToken(response.token)
-                    prefs.saveUser(response.user?.name ?: "", response.user?.email ?: "")
+                    prefs.saveUser(
+                        response.user?.name ?: "",
+                        response.user?.email ?: ""
+                    )
                     _loginState.value = LoginState.Success
                 } else {
-                    _loginState.value = LoginState.Error(response.message)
+                    _loginState.value = LoginState.Error(
+                        response.message ?: "Login failed"
+                    )
                 }
+
             } catch (e: Exception) {
-                _loginState.value = LoginState.Error(e.message ?: "Network error")
+                _loginState.value = LoginState.Error(
+                    e.message ?: "Network error"
+                )
             }
         }
     }
@@ -41,39 +53,78 @@ class AuthViewModel : ViewModel() {
     fun googleSso(context: Context, idToken: String, mode: String) {
         viewModelScope.launch {
             _loginState.value = LoginState.Loading
+
             try {
-                val response = RetrofitInstance.api.ssoLogin(SsoRequest(idToken, mode))
+                val response = RetrofitInstance.api.ssoLogin(
+                    SsoRequest(idToken, mode)
+                )
+
                 if (response.success && response.token != null) {
                     val prefs = UserPreferences(context)
                     prefs.saveToken(response.token)
-                    prefs.saveUser(response.user?.name ?: "", response.user?.email ?: "")
+                    prefs.saveUser(
+                        response.user?.name ?: "",
+                        response.user?.email ?: ""
+                    )
                     _loginState.value = LoginState.Success
                 } else {
-                    _loginState.value = LoginState.Error(response.message)
+                    _loginState.value = LoginState.Error(
+                        response.message ?: "Google sign-in failed"
+                    )
                 }
+
             } catch (e: Exception) {
-                _loginState.value = LoginState.Error(e.message ?: "Network error")
+                _loginState.value = LoginState.Error(
+                    e.message ?: "Network error"
+                )
             }
         }
     }
 
-    fun register(context: Context, name: String, email: String, studentNumber: String, password: String) {
+    fun register(
+        context: Context,
+        name: String,
+        email: String,
+        studentNumber: String,
+        password: String
+    ) {
         viewModelScope.launch {
             _registerState.value = RegisterState.Loading
+
             try {
                 val response = RetrofitInstance.api.register(
-                    RegisterRequest(name, email, studentNumber, password)
+                    RegisterRequest(
+                        name,
+                        email,
+                        studentNumber,
+                        password
+                    )
                 )
-                if (response.success && response.token != null) {
+
+                // The API returns a token on successful registration,
+                // but does not include a "success" field.
+                if (response.token != null) {
                     val prefs = UserPreferences(context)
+
                     prefs.saveToken(response.token)
-                    prefs.saveUser(response.user?.name ?: "", response.user?.email ?: "")
+
+                    prefs.saveUser(
+                        response.user?.name ?: name,
+                        response.user?.email ?: email
+                    )
+
                     _registerState.value = RegisterState.Success
+
                 } else {
-                    _registerState.value = RegisterState.Error(response.message)
+                    _registerState.value = RegisterState.Error(
+                        response.message ?: "Registration failed"
+                    )
                 }
+
             } catch (e: Exception) {
-                _registerState.value = RegisterState.Error(e.message ?: "Network error")
+                _registerState.value = RegisterState.Error(
+                    e.message ?: "Network error"
+                )
             }
         }
     }
